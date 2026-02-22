@@ -79,9 +79,6 @@ try:
             elif api == "send_private_message":
                 scene_type = SceneType.PRIVATE
                 scene_id = str(data["user_id"])
-            elif api == "send_temp_message":
-                scene_type = SceneType.PRIVATE
-                scene_id = f"{data['user_id']}"
             else:
                 return
 

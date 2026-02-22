@@ -230,33 +230,3 @@ async def test_record_send_msg(app: App):
         serialize_message(bot, message),
         message.extract_plain_text(),
     )
-
-    # 测试发送临时消息
-    message_seq = 114519
-    time = 1000003
-    message = Message("test send_temp_message")
-    await record_send_msg(
-        bot,
-        None,
-        "send_temp_message",
-        {
-            "group_id": 5566,
-            "user_id": 3344,
-            "message": [MessageSegment.text("test send_temp_message")],
-        },
-        MessageResponse(message_seq=message_seq, time=time),
-    )
-    await check_record(
-        Session(
-            self_id="2233",
-            adapter="Milky",
-            scope="QQClient",
-            scene=Scene(id="5566_3344", type=SceneType.GROUP),
-            user=User(id="2233"),
-        ),
-        datetime.fromtimestamp(time, timezone.utc),
-        "message_sent",
-        str(message_seq),
-        serialize_message(bot, message),
-        message.extract_plain_text(),
-    )

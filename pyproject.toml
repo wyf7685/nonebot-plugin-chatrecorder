@@ -23,6 +23,8 @@ dev = [
   "nonebot-plugin-orm[default]>=0.7.7,<1.0.0",
   "nonebot-plugin-datastore>=1.0.0,<2.0.0",
   "nonebot-session-to-uninfo>=0.0.2,<0.1.0",
+  { include-group = "test" },
+  { include-group = "adapters" },
 ]
 test = [
   "nonebug>=0.4.3,<0.5.0",
