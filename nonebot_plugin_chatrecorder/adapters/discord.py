@@ -1,6 +1,7 @@
 from typing import Any
 
 from nonebot.adapters import Bot as BaseBot
+from nonebot.compat import model_dump
 from nonebot.message import event_postprocessor
 from nonebot_plugin_orm import get_session
 from nonebot_plugin_uninfo import (
@@ -13,10 +14,12 @@ from nonebot_plugin_uninfo import (
     User,
 )
 from nonebot_plugin_uninfo.orm import get_session_persist_id
+from pydantic import BaseModel
 from typing_extensions import override
 
 from ..config import plugin_config
 from ..message import (
+    JsonMsg,
     MessageDeserializer,
     MessageSerializer,
     register_deserializer,
@@ -114,7 +117,21 @@ try:
                 await db_session.commit()
 
     class Serializer(MessageSerializer[Message]):
-        pass
+        @classmethod
+        def serialize(cls, msg: Message) -> JsonMsg:
+            return [cls.dump_segment_data(seg.__dict__) for seg in msg]
+
+        @classmethod
+        def dump_segment_data(cls, data: Any) -> Any:
+            if isinstance(data, dict):
+                data = {
+                    k: cls.dump_segment_data(
+                        model_dump(v) if isinstance(v, BaseModel) else v
+                    )
+                    for k, v in data.items()
+                    if v is not None and v != UNSET
+                }
+            return data
 
     class Deserializer(MessageDeserializer[Message]):
         @classmethod
