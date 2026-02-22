@@ -11,7 +11,7 @@ from nonebot.adapters.milky.event import (
     TempMessageEvent,
 )
 from nonebot.adapters.milky.model.api import MessageResponse
-from nonebot.adapters.milky.model.event import IncomingMessage
+from nonebot.adapters.milky.model.message import IncomingMessage
 from nonebug.app import App
 
 from .utils import check_record
