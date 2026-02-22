@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from typing import Any, Optional, Union
+from typing import Any
 
 from nonebot.adapters import Bot as BaseBot
 from nonebot.message import event_postprocessor
@@ -39,7 +39,7 @@ try:
 
     @event_postprocessor
     async def record_recv_msg(
-        event: Union[GuildMessageEvent, QQMessageEvent], session: Uninfo
+        event: GuildMessageEvent | QQMessageEvent, session: Uninfo
     ):
         session_persist_id = await get_session_persist_id(session)
 
@@ -72,7 +72,7 @@ try:
         @Bot.on_called_api
         async def record_send_msg(
             bot: BaseBot,
-            e: Optional[Exception],
+            e: Exception | None,
             api: str,
             data: dict[str, Any],
             result: Any,

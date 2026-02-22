@@ -1,6 +1,6 @@
 from collections.abc import Iterable, Sequence
 from datetime import datetime
-from typing import Literal, Optional, Union
+from typing import Literal
 
 from nonebot.adapters import Message
 from nonebot_plugin_orm import get_session
@@ -16,27 +16,27 @@ from .utils import adapter_value, remove_timezone, scene_type_value, scope_value
 
 def filter_statement(
     *,
-    session: Optional[Session] = None,
+    session: Session | None = None,
     filter_self_id: bool = True,
     filter_adapter: bool = True,
     filter_scope: bool = True,
     filter_scene: bool = True,
     filter_user: bool = True,
-    self_ids: Optional[Iterable[str]] = None,
-    adapters: Optional[Iterable[Union[str, SupportAdapter]]] = None,
-    scopes: Optional[Iterable[Union[str, SupportScope]]] = None,
-    scene_types: Optional[Iterable[Union[int, SceneType]]] = None,
-    scene_ids: Optional[Iterable[str]] = None,
-    user_ids: Optional[Iterable[str]] = None,
-    exclude_self_ids: Optional[Iterable[str]] = None,
-    exclude_adapters: Optional[Iterable[Union[str, SupportAdapter]]] = None,
-    exclude_scopes: Optional[Iterable[Union[str, SupportScope]]] = None,
-    exclude_scene_types: Optional[Iterable[Union[int, SceneType]]] = None,
-    exclude_scene_ids: Optional[Iterable[str]] = None,
-    exclude_user_ids: Optional[Iterable[str]] = None,
-    time_start: Optional[datetime] = None,
-    time_stop: Optional[datetime] = None,
-    types: Optional[Iterable[Literal["message", "message_sent"]]] = None,
+    self_ids: Iterable[str] | None = None,
+    adapters: Iterable[str | SupportAdapter] | None = None,
+    scopes: Iterable[str | SupportScope] | None = None,
+    scene_types: Iterable[int | SceneType] | None = None,
+    scene_ids: Iterable[str] | None = None,
+    user_ids: Iterable[str] | None = None,
+    exclude_self_ids: Iterable[str] | None = None,
+    exclude_adapters: Iterable[str | SupportAdapter] | None = None,
+    exclude_scopes: Iterable[str | SupportScope] | None = None,
+    exclude_scene_types: Iterable[int | SceneType] | None = None,
+    exclude_scene_ids: Iterable[str] | None = None,
+    exclude_user_ids: Iterable[str] | None = None,
+    time_start: datetime | None = None,
+    time_stop: datetime | None = None,
+    types: Iterable[Literal["message", "message_sent"]] | None = None,
 ) -> list[ColumnElement[bool]]:
     """筛选消息记录
 

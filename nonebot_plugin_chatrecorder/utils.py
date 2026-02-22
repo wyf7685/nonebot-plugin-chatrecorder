@@ -1,5 +1,4 @@
 from datetime import datetime, timezone
-from typing import Union
 
 from nonebot.adapters import Event
 from nonebot_plugin_uninfo import SceneType, SupportAdapter, SupportScope
@@ -22,13 +21,13 @@ def record_type(event: Event) -> str:
     return "fake" if is_fake_event(event) else "message"
 
 
-def scene_type_value(scene_type: Union[int, SceneType]) -> int:
+def scene_type_value(scene_type: int | SceneType) -> int:
     return scene_type.value if isinstance(scene_type, SceneType) else scene_type
 
 
-def adapter_value(adapter: Union[str, SupportAdapter]) -> str:
+def adapter_value(adapter: str | SupportAdapter) -> str:
     return adapter.value if isinstance(adapter, SupportAdapter) else adapter
 
 
-def scope_value(scope: Union[str, SupportScope]) -> str:
+def scope_value(scope: str | SupportScope) -> str:
     return scope.value if isinstance(scope, SupportScope) else scope

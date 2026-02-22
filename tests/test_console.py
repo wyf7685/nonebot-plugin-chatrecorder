@@ -5,7 +5,7 @@ from nonebot import get_driver
 from nonebot.adapters.console import Adapter, Bot, Message, MessageEvent
 from nonebug.app import App
 from nonechat import ConsoleMessage, Text
-from nonechat.info import User
+from nonechat.model import Robot, User, Channel
 from pydantic import create_model
 
 from .utils import check_record
@@ -19,7 +19,10 @@ def fake_message_event(**field) -> MessageEvent:
         self_id: str = "Bot"
         post_type: str = "message"
         user: User = User(id="User")
+        channel: Channel = Channel(id="Channel", name="Channel")
+        message_id: str = "0"
         message: Message = Message("test")
+        to_me: bool = True
 
         class Config:
             extra = "forbid"
@@ -41,7 +44,11 @@ async def test_record_recv_msg(app: App):
 
     async with app.test_api() as ctx:
         adapter = get_driver()._adapters[Adapter.get_name()]
-        bot = ctx.create_bot(base=Bot, adapter=adapter, self_id="Bot")
+        bot = ctx.create_bot(  # pyright: ignore[reportCallIssue]
+            base=Bot,
+            adapter=adapter,
+            self_id=Robot(id="Bot"),  # pyright: ignore[reportArgumentType]
+        )
 
     event = fake_message_event(
         time=datetime.fromtimestamp(time, timezone.utc),
@@ -78,7 +85,11 @@ async def test_record_send_msg(app: App):
 
     async with app.test_api() as ctx:
         adapter = get_driver()._adapters[Adapter.get_name()]
-        bot = ctx.create_bot(base=Bot, adapter=adapter, self_id="Bot")
+        bot = ctx.create_bot(  # pyright: ignore[reportCallIssue]
+            base=Bot,
+            adapter=adapter,
+            self_id=Robot(id="Bot"),  # pyright: ignore[reportArgumentType]
+        )
 
     user_id = "User"
     elements = ConsoleMessage([Text("test_record_send_msg")])

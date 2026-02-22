@@ -5,6 +5,7 @@ from nonebot.adapters.discord import Adapter as DiscordAdapter
 from nonebot.adapters.dodo import Adapter as DoDoAdapter
 from nonebot.adapters.feishu import Adapter as FeishuAdapter
 from nonebot.adapters.kaiheila import Adapter as KaiheilaAdapter
+from nonebot.adapters.milky import Adapter as MilkyAdapter
 from nonebot.adapters.onebot.v11 import Adapter as OnebotV11Adapter
 from nonebot.adapters.onebot.v12 import Adapter as OnebotV12Adapter
 from nonebot.adapters.qq import Adapter as QQAdapter
@@ -53,6 +54,7 @@ def after_nonebot_init(after_nonebot_init: None):
     driver.register_adapter(DoDoAdapter)
     driver.register_adapter(FeishuAdapter)
     driver.register_adapter(KaiheilaAdapter)
+    driver.register_adapter(MilkyAdapter)
     driver.register_adapter(OnebotV11Adapter)
     driver.register_adapter(OnebotV12Adapter)
     driver.register_adapter(QQAdapter)

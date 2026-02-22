@@ -136,16 +136,18 @@ async def test_record_recv_msg(app: App):
             adapter=adapter,
             self_id="2233",
             login=Login(
+                sn=2233,
+                adapter=adapter.get_name(),
+                status=LoginStatus.ONLINE,
+                platform="kook",
                 user=User(
                     id="2233",
                     name="Bot",
                     avatar="https://xxx.png",
                 ),
-                self_id="2233",
-                platform="kook",
-                status=LoginStatus.ONLINE,
             ),
             info=ClientInfo(port=5140),
+            proxy_urls=[],
         )
 
     event = fake_public_message_created_event(public_msg, public_msg_id)
@@ -204,16 +206,18 @@ async def test_record_send_msg(app: App):
             adapter=adapter,
             self_id="2233",
             login=Login(
+                sn=2233,
+                adapter=adapter.get_name(),
+                status=LoginStatus.ONLINE,
+                platform="kook",
                 user=User(
                     id="2233",
                     name="Bot",
                     avatar="https://xxx.png",
                 ),
-                self_id="2233",
-                platform="kook",
-                status=LoginStatus.ONLINE,
             ),
             info=ClientInfo(port=5140),
+            proxy_urls=[],
         )
 
     await record_send_msg(
@@ -249,7 +253,7 @@ async def test_record_send_msg(app: App):
     )
     await check_record(
         Session(
-            self_id="2233",
+            self_id="kook:2233",
             adapter="Satori",
             scope="Kaiheila",
             scene=Scene(
@@ -257,7 +261,7 @@ async def test_record_send_msg(app: App):
                 type=SceneType.CHANNEL_TEXT,
                 parent=Scene(id="5566", type=SceneType.GUILD),
             ),
-            user=UninfoUser(id="2233"),
+            user=UninfoUser(id="kook:2233"),
         ),
         None,
         "message_sent",

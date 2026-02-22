@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from typing import Any, Optional
+from typing import Any
 
 from nonebot.adapters import Bot as BaseBot
 from nonebot.message import event_postprocessor
@@ -54,7 +54,7 @@ try:
         @Bot.on_called_api
         async def record_send_msg(
             bot: BaseBot,
-            e: Optional[Exception],
+            e: Exception | None,
             api: str,
             data: dict[str, Any],
             result: Any,

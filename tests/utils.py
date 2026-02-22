@@ -13,7 +13,7 @@ def session_id(session: "Session") -> str:
 
 async def check_record(
     session: Optional["Session"],
-    time: Optional[datetime],
+    time: datetime | None,
     type: str,
     message_id: str,
     message: list[dict[str, Any]],
@@ -37,6 +37,8 @@ async def check_record(
     session_model = await get_session_model(session_persist_id)
     record_session = await session_model.to_session()
     if session:
+        record_session_id = session_id(record_session)
+        session_id_ = session_id(session)
         assert session_id(record_session) == session_id(session)
     assert record.type == type
     if time:

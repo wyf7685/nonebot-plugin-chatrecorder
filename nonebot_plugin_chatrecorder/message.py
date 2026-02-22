@@ -1,5 +1,5 @@
 import abc
-from typing import Any, Generic, TypeVar, Union
+from typing import Any, Generic, TypeVar
 
 from nonebot.adapters import Bot, Message
 from nonebot.compat import type_validate_python
@@ -62,9 +62,7 @@ def register_deserializer(
     _deserializers[adapter] = deserializer
 
 
-def serialize_message(
-    bot_type: Union[Bot, SupportAdapter, str], msg: Message
-) -> JsonMsg:
+def serialize_message(bot_type: Bot | SupportAdapter | str, msg: Message) -> JsonMsg:
     if isinstance(bot_type, Bot):
         bot_type = bot_type.type
     if isinstance(bot_type, str):
@@ -72,9 +70,7 @@ def serialize_message(
     return get_serializer(bot_type).serialize(msg)
 
 
-def deserialize_message(
-    bot_type: Union[Bot, SupportAdapter, str], msg: JsonMsg
-) -> Message:
+def deserialize_message(bot_type: Bot | SupportAdapter | str, msg: JsonMsg) -> Message:
     if isinstance(bot_type, Bot):
         bot_type = bot_type.type
     if isinstance(bot_type, str):
