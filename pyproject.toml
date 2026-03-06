@@ -33,7 +33,7 @@ test = [
   "pytest-xdist>=3.0.2,<4.0.0",
   "pytest-asyncio>=1.0.0,<2.0.0",
   "asyncpg>=0.31.0,<0.32.0",
-  "aiomysql>=0.2.0,<0.3.0",
+  "aiomysql>=0.3.2,<0.4.0",
 ]
 adapters = [
   "nonebot-adapter-onebot>=2.4.6,<3.0.0",
