@@ -119,13 +119,14 @@ try:
 
         @classmethod
         def dump_segment_data(cls, data: Any) -> Any:
+            if isinstance(data, BaseModel):
+                data = model_dump(data)
             if isinstance(data, dict):
-                data = {
-                    k: cls.dump_segment_data(
-                        model_dump(v) if isinstance(v, BaseModel) else v
-                    )
-                    for k, v in data.items()
-                }
+                data = {k: cls.dump_segment_data(v) for k, v in data.items()}
+            elif isinstance(data, list):
+                data = [cls.dump_segment_data(v) for v in data]
+            elif isinstance(data, tuple):
+                data = tuple(cls.dump_segment_data(v) for v in data)
             return data
 
     class Deserializer(MessageDeserializer[Message]):
