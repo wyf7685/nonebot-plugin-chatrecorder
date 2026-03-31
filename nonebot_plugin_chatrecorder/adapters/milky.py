@@ -1,3 +1,4 @@
+import dataclasses
 from datetime import datetime, timezone
 from typing import Any
 
@@ -121,12 +122,16 @@ try:
         def dump_segment_data(cls, data: Any) -> Any:
             if isinstance(data, BaseModel):
                 data = model_dump(data)
+            elif dataclasses.is_dataclass(data) and not isinstance(data, type):
+                data = dataclasses.asdict(data)
+
             if isinstance(data, dict):
                 data = {k: cls.dump_segment_data(v) for k, v in data.items()}
             elif isinstance(data, list):
                 data = [cls.dump_segment_data(v) for v in data]
             elif isinstance(data, tuple):
                 data = tuple(cls.dump_segment_data(v) for v in data)
+
             return data
 
     class Deserializer(MessageDeserializer[Message]):
