@@ -1,9 +1,7 @@
-import dataclasses
 from datetime import datetime, timezone
 from typing import Any
 
 from nonebot.adapters import Bot as BaseBot
-from nonebot.compat import model_dump
 from nonebot.message import event_postprocessor
 from nonebot_plugin_orm import get_session
 from nonebot_plugin_uninfo import (
@@ -16,7 +14,7 @@ from nonebot_plugin_uninfo import (
     User,
 )
 from nonebot_plugin_uninfo.orm import get_session_persist_id
-from pydantic import BaseModel
+from pydantic import TypeAdapter
 from typing_extensions import override
 
 from ..config import plugin_config
@@ -113,26 +111,12 @@ try:
                 await db_session.commit()
 
     class Serializer(MessageSerializer[Message]):
+        _dict_ta = TypeAdapter(dict[str, Any])
+
         @classmethod
         @override
         def serialize(cls, msg: Message) -> JsonMsg:
-            return [cls.dump_segment_data(seg.__dict__) for seg in msg]
-
-        @classmethod
-        def dump_segment_data(cls, data: Any) -> Any:
-            if isinstance(data, BaseModel):
-                data = model_dump(data)
-            elif dataclasses.is_dataclass(data) and not isinstance(data, type):
-                data = dataclasses.asdict(data)
-
-            if isinstance(data, dict):
-                data = {k: cls.dump_segment_data(v) for k, v in data.items()}
-            elif isinstance(data, list):
-                data = [cls.dump_segment_data(v) for v in data]
-            elif isinstance(data, tuple):
-                data = tuple(cls.dump_segment_data(v) for v in data)
-
-            return data
+            return [cls._dict_ta.dump_python(seg.__dict__.copy()) for seg in msg]
 
     class Deserializer(MessageDeserializer[Message]):
         @classmethod
