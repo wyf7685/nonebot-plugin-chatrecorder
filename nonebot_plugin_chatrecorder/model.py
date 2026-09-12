@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from nonebot_plugin_orm import Model
-from sqlalchemy import JSON, TEXT, String
+from sqlalchemy import JSON, TEXT, Index, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from .message import JsonMsg
@@ -11,7 +11,15 @@ class MessageRecord(Model):
     """消息记录"""
 
     __tablename__ = "nonebot_plugin_chatrecorder_messagerecord_v2"
-    __table_args__ = {"extend_existing": True}
+    __table_args__ = (
+        Index(
+            "ix_chatrecorder_message_session_time_id",
+            "session_persist_id",
+            "time",
+            "id",
+        ),
+        {"extend_existing": True},
+    )
 
     id: Mapped[int] = mapped_column(primary_key=True)
     session_persist_id: Mapped[int]
